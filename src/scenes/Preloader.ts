@@ -8,15 +8,29 @@ export class Preloader extends Scene {
 	init() {}
 
 	preload() {
-		//  Load the assets for the game - Replace with your own assets
-		// this.load.setPath("assets");
+		//  Chargez les ressources du jeu - Remplacez-les par vos propres ressources.
+
+		this.load.setPath("assets");
+
+		// Si le chargement des images ne fonctionne pas, nous avons un message d'erreur dans chrome. Exemple :
+		// Failed to process file: image "sky"
+
+		this.load.image("sky", "sky.png");
+		this.load.image("ground", "platform.png");
+		this.load.image("star", "star.png");
+		this.load.image("bomb", "bomb.png");
+
+		this.load.spritesheet("dude", "dude.png", {
+			frameWidth: 32,
+			frameHeight: 48,
+		});
 	}
 
 	create() {
-		//  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-		//  For example, you can define global animations here, so we can use them in other scenes.
+		//  Une fois que toutes les ressources sont chargées, il est souvent utile de créer ici des objets globaux
+		//  que le reste du jeu pourra utiliser.
+		//  Par exemple, vous pouvez définir des animations globales ici afin de les réutiliser dans d'autres scènes.
 
-		//  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
 		this.scene.start("Game");
 	}
 }
