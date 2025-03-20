@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { Player } from "../entities/Player";
 
 export class Game extends Scene {
 	constructor() {
@@ -6,6 +7,7 @@ export class Game extends Scene {
 	}
 
 	platforms: Phaser.Physics.Arcade.StaticGroup;
+	player: Phaser.Physics.Arcade.Sprite;
 
 	create() {
 		// Affichage de l'image sky à l'écran.
@@ -31,5 +33,7 @@ export class Game extends Scene {
 		this.platforms.create(600, 400, "ground");
 		this.platforms.create(50, 250, "ground");
 		this.platforms.create(750, 220, "ground");
+
+		this.player = new Player(this, 100, 450);
 	}
 }
