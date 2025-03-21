@@ -57,4 +57,8 @@ export class Player extends Physics.Arcade.Sprite {
 			this.setVelocityY(-330);
 		}
 	}
+
+	collectStar(_: Player, star: Phaser.Physics.Arcade.Sprite) {
+		star.disableBody(true, true);
+	}
 }
