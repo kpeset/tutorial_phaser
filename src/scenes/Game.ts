@@ -12,38 +12,64 @@ export class Game extends Scene {
 	platforms: Platforms;
 	player: Player;
 	stars: Stars;
-	score: number;
-	scoreText: Score;
+	score: Score;
 
 	create() {
-		this.score = 0;
+		// Création de la liste des platforms pour ce niveau
+		const platforms = [
+			{
+				t: "ground",
+				x: 400,
+				y: 600,
+				s: 2,
+			},
+			{
+				t: "ground",
+				x: 800,
+				y: 200,
+				s: 1,
+			},
+			{
+				t: "ground",
+				x: 100,
+				y: 200,
+				s: 1,
+			},
+			{
+				t: "ground",
+				x: 600,
+				y: 100,
+				s: 1,
+			},
+			{
+				t: "ground",
+				x: 600,
+				y: 500,
+				s: 1,
+			},
+		];
+
+		// Ajouter l'image de fond
 		this.add.image(400, 300, "sky");
 
-		this.scoreText = new Score(this, 16, 16, "Score : 0");
-
+		// Initialiser des classes
 		this.player = new Player(this, 100, 450);
 		this.platforms = new Platforms(this);
-
-		this.physics.add.collider(this.player, this.platforms);
-
-		this.platforms.createPlatform(400, 600 - 32, "ground", 2);
-		this.platforms.createPlatform(400, 500 - 32, "ground");
-		this.platforms.createPlatform(100, 420 - 32, "ground");
-		this.platforms.createPlatform(550, 350 - 32, "ground");
-		this.platforms.createPlatform(350, 270 - 32, "ground");
-		this.platforms.createPlatform(100, 200 - 32, "ground");
-		this.platforms.createPlatform(640, 170 - 32, "ground");
-
 		this.stars = new Stars(this);
+		this.score = new Score(this, 16, 16, "Score : 0");
 
+		// Génération des plafeforms dans la scène
+		this.platforms.generatePlatform(platforms);
+
+		// Créer le collider entre le joueur et les platforms
+		this.player.collideWith(this.platforms);
+
+		// Créer le collider entre les étoiles et les platforms
 		this.physics.add.collider(this.stars.group, this.platforms);
-		this.physics.add.overlap(this.player, this.stars.group, (player, star) => {
-			const p = player as Player;
-			const s = star as Phaser.Physics.Arcade.Sprite;
 
-			this.player.collectStar(p, s);
-			this.score += 1;
-			this.scoreText.updateScore(this.score);
+		// Créer les overlaps entre player et les étoiles
+		this.player.overlapWithObject(this.stars.group, () => {
+			this.score.updateScore();
 		});
 	}
 

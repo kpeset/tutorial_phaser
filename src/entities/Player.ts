@@ -9,13 +9,11 @@ export class Player extends Physics.Arcade.Sprite {
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
 
-		const bounce = 0.2;
-		const gravity = 300;
-
-		this.setBounce(bounce);
+		this.setBounce(0.2);
 		this.setCollideWorldBounds(true);
-		this.setGravityY(gravity);
+		this.setGravityY(300);
 
+		// Création des animations propres à player
 		this.anims.create({
 			key: "left",
 			frames: this.anims.generateFrameNumbers("dude", { start: 0, end: 3 }),
@@ -41,6 +39,7 @@ export class Player extends Physics.Arcade.Sprite {
 		}
 	}
 
+	// Fonction du déplacement du player
 	move() {
 		if (this.cursors.left.isDown) {
 			this.setVelocityX(-160);
@@ -58,7 +57,20 @@ export class Player extends Physics.Arcade.Sprite {
 		}
 	}
 
-	collectStar(_: Player, star: Phaser.Physics.Arcade.Sprite) {
-		star.disableBody(true, true);
+	// Collision dynamique avec un groupe
+	collideWith(object: Phaser.Physics.Arcade.StaticGroup) {
+		this.scene.physics.add.collider(this, object);
+	}
+
+	// Overlap entre le player et un objet
+	overlapWithObject(
+		objects: Phaser.Physics.Arcade.Group,
+		onCollect: () => void,
+	) {
+		this.scene.physics.add.overlap(this, objects, (_, object) => {
+			const s = object as Phaser.Physics.Arcade.Sprite;
+			s.disableBody(true, true);
+			onCollect();
+		});
 	}
 }

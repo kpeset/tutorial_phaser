@@ -1,6 +1,8 @@
 import type { Scene } from "phaser";
 
 export class Score extends Phaser.GameObjects.Text {
+	score = 0;
+
 	constructor(
 		scene: Scene,
 		x: number,
@@ -13,7 +15,8 @@ export class Score extends Phaser.GameObjects.Text {
 		scene.add.existing(this);
 	}
 
-	updateScore(score: number) {
-		this.setText(`Score : ${score}`);
+	updateScore() {
+		this.score += 1;
+		this.setText(`Score : ${this.score}`);
 	}
 }
